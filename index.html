@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIF Party!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Start Overlay (Browsers block autoplay music without a user click) */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        #start-btn {
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #ff007f, #7f00ff);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 0, 127, 0.6);
+            transition: transform 0.2s;
+        }
+        #start-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* GIF Styling and Entry Animations */
+        .gif-container {
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* INCREASED SIZE HERE FROM 250px TO 400px */
+            width: 100%;
+            max-width: 400px;
+            max-height: 400px;
+        }
+        .gif-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Class added by JavaScript to trigger the entrance */
+        .gif-container.appear {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="overlay">
+        <button id="start-btn">Start</button>
+    </div>
+    <p>A nice Tribute!!!</p>
+    <audio id="bg-music" loop>
+        <source src="/Meme/Cry for Me x Hit the Jackpot x Bang Bang Bang x Judas.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="gif-container" style="top: 5%; left: 5%;">
+        <img src="https://media.tenor.com/8UntVSgyu6QAAAAM/gojo-satoru-satoru-gojo.gif" alt="Dance 1">
+    </div>
+
+    <div class="gif-container" style="top: 5%; right: 5%;">
+        <img src="https://media.tenor.com/fU7TFoLb8YsAAAAM/passinho-passinho-do-jamal.gif" alt="Dance 2">
+    </div>
+
+    <div class="gif-container" style="bottom: 5%; left: 5%;">
+        <img src="https://media.tenor.com/0XsDOR0-6yMAAAAm/gojo-satoru-satoru-gojo.webp" alt="Dance 3">
+    </div>
+
+    <div class="gif-container" style="bottom: 5%; right: 5%;">
+        <img src="https://media.tenor.com/JENVNG3wANAAAAAM/gojo-satoru-gojo.gif" alt="Dance 4">
+    </div>
+
+    <div class="gif-container" style="top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);">
+        <img src="https://media.tenor.com/PDdc5aPZnEwAAAAM/jjk-gojo.gif" alt="Dance 5">
+    </div>
+
+
+    <script>
+        const overlay = document.getElementById('overlay');
+        const music = document.getElementById('bg-music');
+        const gifs = document.querySelectorAll('.gif-container');
+
+        document.getElementById('start-btn').addEventListener('click', () => {
+            // 1. Hide the overlay
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 500);
+
+            // 2. Play the music
+            music.play();
+
+            // 3. Stagger the entrance of the GIFs
+            gifs.forEach((gif, index) => {
+                setTimeout(() => {
+                    // Quick check: if it's the middle center GIF, preserve its centering transform
+                    if (gif.style.left === '50%') {
+                        gif.style.transform = 'translate(-50%, -50%) scale(1)';
+                        gif.style.opacity = '1';
+                    } else {
+                        gif.classList.add('appear');
+                    }
+                }, (index + 1) * 1200); 
+            });
+        });
+    </script>
+</body>
+</html>
